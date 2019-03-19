@@ -1,4 +1,4 @@
 DB_URIS:
-    "user_service:Base": mysql+pymysql://root:123456@localhost:3306/practice
+    "user_service:Base": mysql+pymysql://root:123456@127.0.0.1:3306/practice
 
 AMQP_URI: amqp://${RABBIT_USER:guest}:${RABBIT_PASSWORD:guest}@${RABBIT_HOST:localhost}:${RABBIT_PORT:5672}/

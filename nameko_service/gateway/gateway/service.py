@@ -2,7 +2,7 @@ import json
 from nameko.rpc import RpcProxy
 from entrypoints import http
 from schemas import RegisterUserSchema, LoginUserSchema
-from utils import generate_token
+from utils import generate_token, resolute_token
 from captcha.captcha.captcha import captcha
 from werkzeug.wrappers import Response
 
@@ -40,7 +40,7 @@ class GatewayService(object):
     def _login_user(self, user_data):
         return self.user_service_rpc.login_user(user_data)
 
-    @http("POST", "/alembic")
+    @http("POST", "/register")
     def register_service(self, request):
         schema = RegisterUserSchema(strict=True)
         try:
@@ -53,3 +53,13 @@ class GatewayService(object):
 
     def _create_user(self, user_data):
         return self.user_service_rpc.create_user(user_data)
+
+    @http("get", "/user")
+    def get_user(self, request):
+        token = request.args.get("token")
+        id, username = resolute_token(token)
+        user = self._get_user(id)
+        return user.get("username")
+
+    def _get_user(self, id):
+        return self.user_service_rpc.get_user(id)

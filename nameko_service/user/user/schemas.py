@@ -16,3 +16,12 @@ class UserSchema(Schema):
     id = fields.Int(required=True)
     username = fields.String(required=True)
 
+
+class GetUserSchema(Schema):
+    id = fields.Int(required=True)
+    username = fields.String(required=True)
+    avatar_url = fields.String()
+    nick_name = fields.String()
+    signature = fields.String()
+    mobile = fields.Integer()
+    email = fields.String()

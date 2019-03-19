@@ -2,7 +2,7 @@ from nameko.rpc import rpc
 from nameko_sqlalchemy import DatabaseSession
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import DeclarativeBase, UserModel
-from schemas import CreateUserSchema, UserSchema
+from schemas import CreateUserSchema, UserSchema, GetUserSchema
 from exceptions import NotFound
 
 
@@ -24,10 +24,18 @@ class User(object):
 
     @rpc
     def login_user(self, user_data):
-        schemas = UserSchema()
         user = self.db.query(UserModel).filter_by(username=user_data.get("username")).first()
         if not user:
             raise NotFound('Order with id {} not found'.format(user_data.get("username")))
         if not check_password_hash(user.password, user_data.get("password")):
             raise ValueError
+        schemas = UserSchema()
+        return schemas.dump(user).data
+
+    @rpc
+    def get_user(self, id):
+        user = self.db.query(UserModel).get(id)
+        if not user:
+            raise ValueError
+        schemas = GetUserSchema()
         return schemas.dump(user).data

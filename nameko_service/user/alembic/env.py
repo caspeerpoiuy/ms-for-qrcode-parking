@@ -10,7 +10,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from user.models import DeclarativeBase
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -26,6 +26,7 @@ fileConfig(config.config_file_name)
 # target_metadata = mymodel.Base.metadata
 
 sys.path.append(dirname(dirname(abspath(__file__))))
+from user.models import DeclarativeBase
 target_metadata = DeclarativeBase.metadata
 
 # other values from the config, defined by the needs of env.py,

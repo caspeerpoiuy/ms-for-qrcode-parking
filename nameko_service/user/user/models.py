@@ -33,10 +33,8 @@ class UserModel(DeclarativeBase):
     email = Column(VARCHAR(length=128), nullable=True)
     mobile = Column(Integer, nullable=True)
     nick_name = Column(VARCHAR(length=128), default=username)
+    signature = Column(VARCHAR(length=128), default="he left nothing")
+    avatar_url = Column(VARCHAR(length=256), default=None)
+    last_login = Column(DateTime, default=datetime.datetime.utcnow)
     is_admin = Column(BOOLEAN, default=False)
 
-    def generate_password(self):
-        return generate_password_hash(self.password)
-
-    def check_password(self):
-        check_password_hash()
