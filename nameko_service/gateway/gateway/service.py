@@ -12,10 +12,11 @@ class GatewayService(object):
     message_service_rpc = RpcProxy("message_service")
     user_service_rpc = RpcProxy("user_service")
 
-    @http("GET", "/image/<string:image_id>")
-    def captcha_service(self, request, image_id):
+    @http("GET", "/image")
+    def captcha_service(self, request):
+        image_id = request.args.get("image_id")
         _, code, image = captcha.generate_captcha()
-        self.message_service_rpc.store_code.call_async(code)
+        self.message_service_rpc.store_code.call_async(image_id, code)
         return Response(
             image,
             mimetype='img/jpg'
